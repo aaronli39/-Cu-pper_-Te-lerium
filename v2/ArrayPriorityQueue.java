@@ -28,7 +28,11 @@ public class ArrayPriorityQueue { // class ArrayPriorityQueue
      // add a String input to _data
      // O(1)
      public void add(String inp) {
-          _data.add(inp);
+          _data.add(inp, 0, _data.size() / 2, _data.size()));
+     }
+
+     public void add(String inp, int min, int mid, int max) {
+
      }
 
      // checks for the String element of smallest value in _data
