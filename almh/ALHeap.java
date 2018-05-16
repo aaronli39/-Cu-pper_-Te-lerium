@@ -67,17 +67,18 @@ public class ALHeap
      *****************************************************/
      public void add( Integer addVal )
      {
-          _heap.add(addVal);
-          int index = _heap.size() - 1;
+          _heap.add(addVal); // first add the value to the end
+          int index = _heap.size() - 1; // starting index
 
+          // while index is bigger than 0, keep sifting
           while (index > 0) {
-               int parent = (index - 1) / 2;
-
+               int parent = (index - 1) / 2; // index of parent
+               // if the child(curent index) is smaller than parent, swap
                if(_heap.get(index).compareTo(_heap.get(parent)) < 0) {
                     swap(index, parent);
                     index = parent;
                } else {
-                    break;
+                    break; // break otherwise
                }
           }
      } // O(logn)
@@ -95,10 +96,10 @@ public class ALHeap
 	}
 	int min = this.peekMin();
 	int newRoot = _heap.get( _heap.size() - 1 ); //furthest node in heap
-	
+
 	swap( 0, _heap.size() - 1 );
 	_heap.remove( _heap.size() - 1 );
-	
+
 	int pos = 0;
 	int child;
 
@@ -140,7 +141,7 @@ public class ALHeap
 	    return left;
 	}
 	else {
-	    return right; 
+	    return right;
 	}
      } // O(1)
 

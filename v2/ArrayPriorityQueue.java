@@ -10,43 +10,46 @@ public class ArrayPriorityQueue { // class ArrayPriorityQueue
 
      // instance variables
      ArrayList<String> _data;
-     int _size;
 
      // default constructor
      public ArrayPriorityQueue() {
           _data = new ArrayList();
-          _size = 0;
      }
 
      // checks if _data is empty
      // returns: true if empty, false otherwise
      // O(1)
      public boolean isEmpty() {
-          return _size == 0;
+          return _data.size() == 0;
      }
 
      // add a String input to _data
      // O(1)
      public void add(String inp) {
-          _data.add(inp, 0, _data.size() / 2, _data.size()));
+          if (this.isEmpty() || inp.compareTo(_data.get(_data.size() - 1)) > 0) _data.add(inp);
+          else if (inp.compareTo(_data.get(0)) < 0) _data.add(0, inp);
+          else {
+               this.add(inp, 0, _data.size() / 2, _data.size());
+          }
      }
 
      public void add(String inp, int min, int mid, int max) {
-
+          System.out.println("" + min + ", " + mid + ", " + max);
+          if (((max - min)) == 1) {
+               _data.add(max, inp);
+               return;
+          } if (inp.equals(_data.get(mid))) {
+               _data.add(mid, inp);
+               return;
+          } else if (_data.get(mid).compareTo(inp) > 0) add(inp, min, ((mid-min) / 2)-1, mid);
+          else add(inp, mid, ((max + mid) -1) / 2, max-1);
      }
 
      // checks for the String element of smallest value in _data
      // returns: String element of the smallest value
      // O(n)
      public String peekMin() {
-          // start from beginning of ArrayList
-          String ret = _data.get(0);
-          // for loop to iterate through ArrayList
-          for (int i = 1; i < _data.size(); i++) {
-               // if the current element is smaller than the stored element, set it
-               // as the new stored element
-               if (ret.compareToIgnoreCase(_data.get(i)) >= 0) ret = _data.get(i);
-          } return ret;
+          return _data.get(0);
      }
 
      // removes and returns the smallest String element
@@ -54,7 +57,7 @@ public class ArrayPriorityQueue { // class ArrayPriorityQueue
      // O(n)
      public String removeMin() {
           String ret = this.peekMin();
-          _data.remove(_data.indexOf(this.peekMin()));
+          _data.remove(0);
           return ret;
      }
 
@@ -73,12 +76,17 @@ public class ArrayPriorityQueue { // class ArrayPriorityQueue
      public static void main(String[] args) {
           ArrayPriorityQueue test = new ArrayPriorityQueue();
           System.out.println("\nAdding elements to the queue...");
-          test.add("Munchkins");
-          test.add("glazed donuts");
-          test.add("cool beans");
-          test.add("smoothies");
-          test.add("hashbrowns");
-          test.add("bacon");
+          test.add("baboons");
+          System.out.println(test.toString());
+          test.add("monkeys");
+          System.out.println(test.toString());
+          test.add("orangutans");
+          System.out.println(test.toString());
+          test.add("chimpanzee");
+          System.out.println(test.toString());
+          test.add("gorilla");
+          System.out.println(test.toString());
+          test.add("ape");
 
           System.out.println("\nPrinting current queue...");
           System.out.println(test.toString());
@@ -91,7 +99,6 @@ public class ArrayPriorityQueue { // class ArrayPriorityQueue
           System.out.println("Removing next smallest String element: " + test.peekMin());
           test.removeMin();
           System.out.println(test.toString());
-
      } // end main method
 
 } // end class
