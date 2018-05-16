@@ -25,4 +25,4 @@ heap[position] = newValue;
 #### Removing Algorithm:
 1. The element of interest is the root of the tree.
 2. Remove the root, and replace it with the last element.
-3. Similar to inserting, we precolate downwards instead of upwards. This will maintain heap property.
+3. Similar to inserting, we sift the new root downwards instead of upwards. This will maintain heap property.
