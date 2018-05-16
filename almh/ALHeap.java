@@ -53,6 +53,9 @@ public class ALHeap
      *****************************************************/
      public Integer peekMin()
      {
+	  if ( _heap.size() < 1 ) {
+		return null;
+	  }
           return _heap.get(0);
      } // O(1)
 
@@ -66,8 +69,10 @@ public class ALHeap
      {
           _heap.add(addVal);
           int index = _heap.size() - 1;
+
           while (index > 0) {
                int parent = (index - 1) / 2;
+
                if(_heap.get(index).compareTo(_heap.get(parent)) < 0) {
                     swap(index, parent);
                     index = parent;
@@ -85,19 +90,33 @@ public class ALHeap
      *****************************************************/
      public Integer removeMin()
      {
-          int ret = _heap.remove(0);
-          _heap.add(0, _heap.remove(_heap.size() - 1));
-          int index = 0;
-          while (index < _heap.size()) {
-               if (minChildPos(index) >= 0 && _heap.get(index) > minChildPos(index)) {
-                    int min = minChildPos(index);
-                    swap(index, min);
-                    index = min;
-               } else {
-                    break;
-               }
-          }
-          return ret;
+	if( isEmpty() ){
+	    return null;
+	}
+	int min = this.peekMin();
+	int newRoot = _heap.get( _heap.size() - 1 ); //furthest node in heap
+	
+	swap( 0, _heap.size() - 1 );
+	_heap.remove( _heap.size() - 1 );
+	
+	int pos = 0;
+	int child;
+
+	while ( pos < _heap.size() ) {
+	    child = minChildPos( pos ); // choose smallest child
+
+	    if ( child == -1 ) { //if no children, stop
+		break;
+	    }
+	    else if ( newRoot <=  _heap.get(child) ){ //less than the least child
+		break;
+	    }
+	    else { //greater than least child (out of place)
+		swap( pos, child );
+		pos = child;
+	     }
+	}
+	return min;
      } // O(logn)
 
 
@@ -107,11 +126,22 @@ public class ALHeap
      * -1 if no children, or if input pos is not in ArrayList
      * Postcondition: Tree unchanged
      *****************************************************/
-     private int minChildPos( int pos )
-     {
-          if (pos < _heap.size() && 2 * pos + 1 < _heap.size() && 2 * pos + 2 < _heap.size())
-          return _heap.indexOf(minOf(_heap.get(2 * pos + 1), _heap.get(2 * pos + 2)));
-          else return -1;
+     private int minChildPos( int pos ) {
+	int left = 2 * pos + 1; //index of left
+	int right = 2 * pos + 2; //index of right
+
+	if ( pos < 0 || pos >= _heap.size() || left >= _heap.size() ) { //element is leaf || not in heap
+	    return -1;
+	}
+	else if ( right >= _heap.size() ) { // right child not present
+	    return left;
+	}
+	else if ( _heap.get(left) < _heap.get(right) ) { // 2 children, left is smaller
+	    return left;
+	}
+	else {
+	    return right; 
+	}
      } // O(1)
 
 
@@ -159,10 +189,6 @@ public class ALHeap
           pile.add(9);
           System.out.println(pile);
 
-          System.out.println("removing " + pile.removeMin() + "...");
-          System.out.println(pile);
-          System.out.println("removing " + pile.removeMin() + "...");
-          System.out.println(pile);
           System.out.println("removing " + pile.removeMin() + "...");
           System.out.println(pile);
           System.out.println("removing " + pile.removeMin() + "...");
