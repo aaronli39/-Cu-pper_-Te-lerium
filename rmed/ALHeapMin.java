@@ -15,7 +15,7 @@ public class ALHeapMin
      /*****************************************************
      * default constructor  ---  inits empty heap
      *****************************************************/
-     public ALHeap()
+     public ALHeapMin()
      {
           _heap = new ArrayList<Integer>();
      }
